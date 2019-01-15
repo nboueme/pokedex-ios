@@ -24,21 +24,46 @@ class PokedexService {
                         completion(nil)
                     }
                 } else if response.result.isFailure {
-                    switch response.error!._code {
-                    case NSURLErrorTimedOut:
-                        print("Network Timeout!")
-                        break
-                    case NSURLErrorNotConnectedToInternet:
-                        print("You're not connected to Internet!")
-                        break
-                    default:
-                        print(response.error!._code)
-                    }
+                    self.handleError(code: response.error!._code)
                     completion(nil)
                 }
             } catch {
                 completion(nil)
             }
+        }
+    }
+    
+    func getOne(withURL: String, completion: @escaping (PokemonDetails?) -> Void) {
+        Alamofire.request(withURL).responseData { response in
+            do {
+                if response.result.isSuccess {
+                    let jsonDecoder = JSONDecoder()
+                    if let jsonData = response.result.value {
+                        let pokemon = try jsonDecoder.decode(PokemonDetails.self, from: jsonData)
+                        completion(pokemon)
+                    } else {
+                        completion(nil)
+                    }
+                } else if response.result.isFailure {
+                    self.handleError(code: response.error!._code)
+                    completion(nil)
+                }
+            } catch {
+                completion(nil)
+            }
+        }
+    }
+    
+    private func handleError(code: NSInteger) {
+        switch code {
+        case NSURLErrorTimedOut:
+            print("Network Timeout!")
+            break
+        case NSURLErrorNotConnectedToInternet:
+            print("You're not connected to Internet!")
+            break
+        default:
+            print(code)
         }
     }
 }

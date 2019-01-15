@@ -38,7 +38,7 @@ class PokeListViewController: UIViewController {
     }
 }
 
-extension PokeListViewController: UITableViewDataSource {
+extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -55,9 +55,20 @@ extension PokeListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath)
         let pokemon = pokedex![indexPath.row]
         
-        cell.textLabel?.text = pokemon.name
-        cell.detailTextLabel?.text = "#\(indexPath.row + 1)"
+        cell.textLabel?.text = "#\(indexPath.row + 1) \(pokemon.name!)"
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        loading.isHidden = false
+        let URL = pokedex![indexPath.row].url!
+        pokedexService.getOne(withURL: URL) { pokemon in
+            if let pokemon = pokemon {
+                self.loading.isHidden = true
+                print(pokemon.name!)
+                print(pokemon.height!)
+            }
+        }
     }
 }
