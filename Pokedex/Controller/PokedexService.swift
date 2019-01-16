@@ -13,22 +13,24 @@ class PokedexService {
     let pokeAPIBaseURL = URL(string: "https://pokeapi.co/api/v2/pokemon/")
     
     func getList(completion: @escaping ([Pokemon]?) -> Void) {
-        Alamofire.request(pokeAPIBaseURL!).responseData { response in
-            do {
-                if response.result.isSuccess {
-                    let jsonDecoder = JSONDecoder()
-                    if let jsonData = response.result.value {
-                        let pokedex = try jsonDecoder.decode(Pokedex.self, from: jsonData)
-                        completion(pokedex.results!)
-                    } else {
+        if let withURL = pokeAPIBaseURL {
+            Alamofire.request(withURL).responseData { response in
+                do {
+                    if response.result.isSuccess {
+                        let jsonDecoder = JSONDecoder()
+                        if let jsonData = response.result.value {
+                            let pokedex = try jsonDecoder.decode(Pokedex.self, from: jsonData)
+                            completion(pokedex.results!)
+                        } else {
+                            completion(nil)
+                        }
+                    } else if response.result.isFailure {
+                        self.handleError(code: response.error!._code)
                         completion(nil)
                     }
-                } else if response.result.isFailure {
-                    self.handleError(code: response.error!._code)
+                } catch {
                     completion(nil)
                 }
-            } catch {
-                completion(nil)
             }
         }
     }

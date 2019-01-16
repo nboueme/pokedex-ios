@@ -13,8 +13,9 @@ class PokeListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
-    var pokedexService: PokedexService!
-    var pokedex: [Pokemon]?
+    private var pokedexService: PokedexService!
+    private var pokedex: [Pokemon]?
+    private var selectedPokemon: PokemonDetails?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +24,7 @@ class PokeListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        selectedPokemon = nil
     }
     
     private func loadPokedexData() {
@@ -36,6 +37,14 @@ class PokeListViewController: UIViewController {
             }
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifier = segue.identifier, identifier == "goToPokemonDetails" {
+            if let destination = segue.destination as? PokemonDetailsViewController, let selectedPokemon = selectedPokemon {
+                destination.pokemon = selectedPokemon
+            }
+        }
+    }
 }
 
 extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
@@ -44,30 +53,41 @@ extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let pokedex = pokedex {
-            return pokedex.count
-        } else {
+        guard let pokedex = pokedex else {
             return 0
         }
+        return pokedex.count
+        // return pokedex != nil ? pokedex!.count : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath)
-        let pokemon = pokedex![indexPath.row]
         
-        cell.textLabel?.text = "#\(indexPath.row + 1) \(pokemon.name!)"
+        if let pokedex = pokedex {
+            let pokemon = pokedex[indexPath.row]
+            
+            if let name = pokemon.name {
+                cell.textLabel?.text = "#\(indexPath.row + 1) \(name)"
+            }
+        }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         loading.isHidden = false
-        let URL = pokedex![indexPath.row].url!
-        pokedexService.getOne(withURL: URL) { pokemon in
-            if let pokemon = pokemon {
-                self.loading.isHidden = true
-                print(pokemon.name!)
-                print(pokemon.height!)
+        if let pokedex = pokedex, let URL = pokedex[indexPath.row].url {
+            pokedexService.getOne(withURL: URL) { pokemon in
+                if let pokemon = pokemon {
+                    self.loading.isHidden = true
+                    
+                    //                let pokemonDetailsViewController = self.storyboard?.instantiateViewController(withIdentifier: "PokemonDetailsViewController") as? PokemonDetailsViewController
+                    //                pokemonDetailsViewController?.pokemon = pokemon
+                    //                self.navigationController?.pushViewController(pokemonDetailsViewController!, animated: true)
+                    
+                    self.selectedPokemon = pokemon
+                    self.performSegue(withIdentifier: "goToPokemonDetails", sender: nil)
+                }
             }
         }
     }
