@@ -14,7 +14,7 @@ class PokeListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
-    private var pokedexService: PokedexService!
+    private var pokedexService = PokedexService()
     private var pokedex: [Pokemon]?
     private var selectedPokemon: PokemonDetails?
     
@@ -32,7 +32,6 @@ class PokeListViewController: UIViewController {
     }
     
     private func loadPokedexData() {
-        pokedexService = PokedexService()
         pokedexService.getList { pokedex in
             if let pokedex = pokedex {
                 self.pokedex = pokedex

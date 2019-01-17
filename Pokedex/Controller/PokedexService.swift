@@ -56,6 +56,17 @@ class PokedexService {
         }
     }
     
+    func getSprite(withURL: String, completion: @escaping (UIImage?) -> Void) {
+        Alamofire.request(withURL).responseData { response in
+            if response.result.isSuccess {
+                completion(UIImage(data: response.data!, scale: 1))
+            } else if response.result.isFailure {
+                self.handleError(code: response.error!._code)
+                completion(nil)
+            }
+        }
+    }
+    
     private func handleError(code: NSInteger) {
         switch code {
         case NSURLErrorTimedOut:

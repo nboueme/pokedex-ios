@@ -18,6 +18,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <searchBar contentMode="redraw" barStyle="black" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Elq-SY-qQW">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" red="0.74117647060000003" green="0.18039215689999999" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="q1u-fE-z7b"/>
+                                </connections>
+                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2xq-io-NJ9">
                                 <rect key="frame" x="0.0" y="56" width="375" height="547"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -45,35 +58,21 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="rdf-2L-eVK"/>
                                 </connections>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="RTh-vF-8Hu">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="RTh-vF-8Hu">
+                                <rect key="frame" x="169" y="311" width="37" height="37"/>
+                                <color key="color" red="0.74117647060000003" green="0.18039215689999999" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
-                            <searchBar contentMode="redraw" barStyle="black" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Elq-SY-qQW">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="barTintColor" red="0.74117647060000003" green="0.18039215689999999" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="q1u-fE-z7b"/>
-                                </connections>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Elq-SY-qQW" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="5if-ef-20S"/>
+                            <constraint firstItem="RTh-vF-8Hu" firstAttribute="centerY" secondItem="2xq-io-NJ9" secondAttribute="centerY" id="7T8-R5-lOx"/>
                             <constraint firstItem="Elq-SY-qQW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="8ZO-YO-koz"/>
-                            <constraint firstItem="RTh-vF-8Hu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="IEb-ao-S4g"/>
                             <constraint firstItem="Elq-SY-qQW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="N87-Vs-eEL"/>
                             <constraint firstItem="2xq-io-NJ9" firstAttribute="top" secondItem="Elq-SY-qQW" secondAttribute="bottom" id="Vep-oP-yzX"/>
-                            <constraint firstItem="RTh-vF-8Hu" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="YQH-32-Cf0"/>
                             <constraint firstItem="2xq-io-NJ9" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="agX-b0-7Lk"/>
                             <constraint firstItem="2xq-io-NJ9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ahc-y2-ZJz"/>
-                            <constraint firstItem="RTh-vF-8Hu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="mal-vF-etv"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="RTh-vF-8Hu" secondAttribute="bottom" id="umK-6d-tHP"/>
+                            <constraint firstItem="RTh-vF-8Hu" firstAttribute="centerX" secondItem="2xq-io-NJ9" secondAttribute="centerX" id="thL-nh-jgV"/>
                             <constraint firstItem="2xq-io-NJ9" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="vuE-Bu-etL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

@@ -9,7 +9,10 @@
 import Foundation
 
 struct PokemonDetails: Codable {
+    var id: Int?
+    var base_experience: Int?
     var height: Int?
     var name: String?
+    var sprites: Sprites?
     var weight: Int?
 }
