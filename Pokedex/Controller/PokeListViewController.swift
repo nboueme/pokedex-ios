@@ -15,11 +15,14 @@ class PokeListViewController: UIViewController {
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
     private var pokedexService = PokedexService()
-    private var pokedex: [Pokemon]?
+    private var pokedex: [Pokemon] = [] {
+        didSet {
+           currentPokedex = pokedex
+        }
+    }
     private var selectedPokemon: PokemonDetails?
-    
-    private var searchPokedex: [Pokemon]?
-    private var searching = false
+    private var catchedPokemons: [String] = []
+    private var currentPokedex: [Pokemon] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,43 +45,15 @@ class PokeListViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let identifier = segue.identifier, identifier == "goToPokemonDetails" {
-            if let destination = segue.destination as? PokemonDetailsViewController, let selectedPokemon = selectedPokemon {
-                destination.pokemon = selectedPokemon
+        if let vc = segue.destination as? PokemonDetailsViewController,
+            segue.identifier == "goToPokemonDetails",
+            let selectedPokemon = selectedPokemon {
+            vc.pokemon = selectedPokemon
+            if let pokemonName = selectedPokemon.name,
+                let _ = catchedPokemons.index(of: pokemonName) {
+                vc.catched = true
             }
-        }
-    }
-    
-    private func numberOfRowsInSection(for pokedex: [Pokemon]?) -> Int {
-        guard let pokedex = pokedex else {
-            return 0
-        }
-        return pokedex.count
-    }
-    
-    private func cellForRowAt(_ indexPath: IndexPath, with pokedex: [Pokemon]?) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath)
-        
-        if let pokedex = pokedex {
-            let pokemon = pokedex[indexPath.row]
-            
-            if let name = pokemon.name {
-                cell.textLabel?.text = name
-            }
-        }
-        
-        return cell
-    }
-    
-    private func didSelectRowAt(_ indexPath: IndexPath, with pokedex: [Pokemon]?) {
-        if let pokedex = pokedex, let URL = pokedex[indexPath.row].url {
-            pokedexService.getOne(withURL: URL) { pokemon in
-                if let pokemon = pokemon {
-                    self.loading.isHidden = true
-                    self.selectedPokemon = pokemon
-                    self.performSegue(withIdentifier: "goToPokemonDetails", sender: nil)
-                }
-            }
+            vc.delegate = self
         }
     }
 }
@@ -89,29 +64,33 @@ extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searching {
-            return numberOfRowsInSection(for: searchPokedex)
-        } else {
-            return numberOfRowsInSection(for: pokedex)
-        }
-        // return pokedex != nil ? pokedex!.count : 0
+        return currentPokedex.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if searching {
-            return cellForRowAt(indexPath, with: searchPokedex)
-        } else {
-            return cellForRowAt(indexPath, with: pokedex)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath)
+        
+        let pokemon = currentPokedex[indexPath.row]
+            
+        if let pokemonName = pokemon.name {
+            cell.textLabel?.text = pokemonName
+            cell.backgroundColor = catchedPokemons.index(of: pokemonName) != nil ? #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1) : .white
         }
+        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         loading.isHidden = false
         
-        if searching {
-            didSelectRowAt(indexPath, with: searchPokedex)
-        } else {
-            didSelectRowAt(indexPath, with: pokedex)
+        if let URL = currentPokedex[indexPath.row].url {
+            pokedexService.getOne(withURL: URL) { pokemon in
+                if let pokemon = pokemon {
+                    self.loading.isHidden = true
+                    self.selectedPokemon = pokemon
+                    self.performSegue(withIdentifier: "goToPokemonDetails", sender: nil)
+                }
+            }
         }
         
         // let pokemonDetailsViewController = self.storyboard?.instantiateViewController(withIdentifier: "PokemonDetailsViewController") as? PokemonDetailsViewController
@@ -120,20 +99,22 @@ extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension PokeListViewController: UISearchBarDelegate{
+extension PokeListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.count > 0 {
-            searchPokedex = pokedex?.filter({$0.name!.lowercased().contains(searchText.lowercased())})
-            searching = true
-        } else {
-            searching = false
-        }
+        currentPokedex = searchText.count > 0 ? pokedex.filter({$0.name!.lowercased().contains(searchText.lowercased())}) : pokedex
         tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searching = false
         searchBar.text = ""
+        currentPokedex = pokedex
+        tableView.reloadData()
+    }
+}
+
+extension PokeListViewController: ChildToParentProtocol {
+    func isCatched(name: String) {
+        catchedPokemons.append(name)
         tableView.reloadData()
     }
 }
