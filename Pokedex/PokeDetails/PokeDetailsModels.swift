@@ -14,9 +14,11 @@ enum PokeDetailsModel {
         }
         struct Response {
             var pokemon: PokemonDetails
+            var isCatched: Bool
         }
         struct ViewModel {
             var pokemon: PokemonDetails
+            var isCatched: Bool
         }
     }
     

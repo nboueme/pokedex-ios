@@ -20,6 +20,7 @@ struct PokeListModel {
         }
         struct ViewModel {
             var pokedex: [Pokemon]?
+            var next: String?
             var isError: Bool
             var message: String?
         }
@@ -28,6 +29,7 @@ struct PokeListModel {
     struct FetchPokemon {
         struct Request {
             var URL: String?
+            var isCatched: Bool
         }
         struct Response {
             var pokemon: PokemonDetails?

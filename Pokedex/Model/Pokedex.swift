@@ -10,5 +10,6 @@ import UIKit
 
 struct Pokedex: Codable {
     var count: Int?
+    var next: String?
     var results: [Pokemon]?
 }

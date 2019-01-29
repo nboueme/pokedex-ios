@@ -17,6 +17,7 @@ protocol PokeListBusinessLogic {
 protocol PokeListDataStore {
     var pokemon: PokemonDetails? { get set }
     var catchedPokemon: String? { get set }
+    var selectedIsCatched: Bool { get set }
 }
 
 class PokeListInteractor: PokeListBusinessLogic, PokeListDataStore {
@@ -24,6 +25,7 @@ class PokeListInteractor: PokeListBusinessLogic, PokeListDataStore {
     var worker: PokeListWorker?
     var pokemon: PokemonDetails?
     var catchedPokemon: String?
+    var selectedIsCatched = false
     
     func fetchPokedex(request: PokeListModel.FetchPokedex.Request) {
         if let baseURL = request.baseURL {
@@ -40,6 +42,7 @@ class PokeListInteractor: PokeListBusinessLogic, PokeListDataStore {
     
     func fetchPokemon(request: PokeListModel.FetchPokemon.Request) {
         if let URL = request.URL {
+            selectedIsCatched = request.isCatched
             worker = PokeListWorker()
             worker?.fetchPokemon(withURL: URL, success: { response in
                 self.pokemon = response.pokemon

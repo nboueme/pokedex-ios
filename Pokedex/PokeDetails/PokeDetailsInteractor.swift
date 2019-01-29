@@ -15,16 +15,18 @@ protocol PokeDetailsBusinessLogic {
 
 protocol PokeDetailsDataStore {
     var pokemon: PokemonDetails? { get set }
+    var isCatched: Bool { get set }
 }
 
 class PokeDetailsInteractor: PokeDetailsBusinessLogic, PokeDetailsDataStore {
     var presenter: PokeDetailsPresentationLogic?
     var worker: PokeDetailsWorker?
     var pokemon: PokemonDetails?
+    var isCatched = false
     
     func getPokemon(request: PokeDetailsModel.GetPokemon.Request) {
         if let pokemon = pokemon {
-            let response = PokeDetailsModel.GetPokemon.Response(pokemon: pokemon)
+            let response = PokeDetailsModel.GetPokemon.Response(pokemon: pokemon, isCatched: isCatched)
             presenter?.presentPokemon(response: response)
         }
     }

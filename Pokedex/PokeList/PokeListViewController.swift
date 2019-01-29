@@ -54,9 +54,9 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let URL = "https://pokeapi.co/api/v2/pokemon/"
-        let URL = "https://pokeapi-215911.firebaseapp.com/api/v2/pokemon?offset=00&limit=949"
+        let URL = "https://pokeapi.co/api/v2/pokemon/"
         interactor?.fetchPokedex(request: PokeListModel.FetchPokedex.Request(baseURL: URL))
+        tableView.prefetchDataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,13 +75,25 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
     }
     private var currentPokedex: [Pokemon] = []
     private var catchedPokemons: [String] = []
+    private var nextPokemonURL: String?
     
     func successFetchedPokedex(viewModel: PokeListModel.FetchPokedex.ViewModel) {
-        if let pokedex = viewModel.pokedex {
-            self.pokedex = pokedex
-            tableView.reloadData()
-            loading.isHidden = true
+        if pokedex.count > 0 {
+            if let pokedex = viewModel.pokedex {
+                for pokemon in pokedex {
+                    self.pokedex.append(pokemon)
+                }
+            }
+        } else {
+            if let pokedex = viewModel.pokedex {
+                self.pokedex = pokedex
+            }
         }
+        
+        self.nextPokemonURL = viewModel.next
+        
+        tableView.reloadData()
+        loading.isHidden = true
     }
     
     func errorFetchingPokedex(viewModel: PokeListModel.FetchPokedex.ViewModel) {
@@ -107,7 +119,7 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
     }
 }
 
-extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
+extension PokeListViewController: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -123,6 +135,7 @@ extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
         
         if let pokemonName = pokemon.name {
             cell.textLabel?.text = pokemonName
+//            cell.textLabel?.text = "#\(indexPath.row + 1) \(pokemonName)"
             cell.backgroundColor = catchedPokemons.index(of: pokemonName) != nil ? #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1) : .white
         }
         
@@ -132,8 +145,18 @@ extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         loading.isHidden = false
         
-        if let URL = currentPokedex[indexPath.row].url {
-            interactor?.fetchPokemon(request: PokeListModel.FetchPokemon.Request(URL: URL))
+        if let pokemonName = currentPokedex[indexPath.row].name, let URL = currentPokedex[indexPath.row].url {
+            let isCatched = catchedPokemons.index(of: pokemonName) != nil ? true : false
+            interactor?.fetchPokemon(request: PokeListModel.FetchPokemon.Request(URL: URL, isCatched: isCatched))
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        if indexPaths.contains(where: isLoadingCell) {
+            if let _ = nextPokemonURL {
+                loading.isHidden = false
+            }
+            interactor?.fetchPokedex(request: PokeListModel.FetchPokedex.Request(baseURL: nextPokemonURL))
         }
     }
 }
@@ -148,5 +171,11 @@ extension PokeListViewController: UISearchBarDelegate {
         searchBar.text = String()
         currentPokedex = pokedex
         tableView.reloadData()
+    }
+}
+
+private extension PokeListViewController {
+    func isLoadingCell(for indexPath: IndexPath) -> Bool {
+        return indexPath.row + 1 >= pokedex.count
     }
 }

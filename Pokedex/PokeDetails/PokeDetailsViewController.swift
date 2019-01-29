@@ -64,6 +64,7 @@ class PokeDetailsViewController: UIViewController, PokeDetailsDisplayLogic {
     
     func displayPokemon(viewModel: PokeDetailsModel.GetPokemon.ViewModel) {
         pokemon = viewModel.pokemon
+        catched = viewModel.isCatched
         getDetails()
         isCatched()
     }
@@ -97,6 +98,8 @@ class PokeDetailsViewController: UIViewController, PokeDetailsDisplayLogic {
     
     func errorFetchingSprite(viewModel: PokeDetailsModel.FetchSprite.ViewModel) {
         print(viewModel.message!)
+        loading.isHidden = true
+        sprite.backgroundColor = .white
     }
     
     @IBAction func catchAction(_ sender: UIButton) {

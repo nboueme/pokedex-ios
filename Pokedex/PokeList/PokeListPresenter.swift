@@ -18,7 +18,7 @@ class PokeListPresenter: PokeListPresentationLogic {
     weak var viewController: PokeListDisplayLogic?
     
     func presentFetchPokedex(response: PokeListModel.FetchPokedex.Response) {
-        let viewModel = PokeListModel.FetchPokedex.ViewModel(pokedex: response.pokeListObj?.results, isError: response.isError, message: response.message)
+        let viewModel = PokeListModel.FetchPokedex.ViewModel(pokedex: response.pokeListObj?.results, next: response.pokeListObj?.next, isError: response.isError, message: response.message)
         
         if viewModel.isError {
             viewController?.errorFetchingPokedex(viewModel: viewModel)

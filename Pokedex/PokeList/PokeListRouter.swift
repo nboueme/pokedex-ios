@@ -40,5 +40,6 @@ class PokeListRouter: NSObject, PokeListRoutingLogic, PokeListDataPassing {
     
     func passDataToPokeDetails(source: PokeListDataStore, destination: inout PokeDetailsDataStore) {
         destination.pokemon = source.pokemon
+        destination.isCatched = source.selectedIsCatched
     }
 }

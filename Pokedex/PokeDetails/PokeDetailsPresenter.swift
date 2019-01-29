@@ -17,7 +17,7 @@ class PokeDetailsPresenter: PokeDetailsPresentationLogic {
     weak var viewController: PokeDetailsDisplayLogic?
     
     func presentPokemon(response: PokeDetailsModel.GetPokemon.Response) {
-        let viewModel = PokeDetailsModel.GetPokemon.ViewModel(pokemon: response.pokemon)
+        let viewModel = PokeDetailsModel.GetPokemon.ViewModel(pokemon: response.pokemon, isCatched: response.isCatched)
         viewController?.displayPokemon(viewModel: viewModel)
     }
     
