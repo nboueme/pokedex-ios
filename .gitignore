@@ -1,4 +1,5 @@
-Pods/
-Podfile.lock
-*.xcworkspace
+#Pods/
+#Podfile.lock
+#*.xcworkspace
+xcuserdata/
 .DS_Store

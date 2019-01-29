@@ -13,10 +13,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Pokemon Details View Controller-->
+        <!--Poke Details View Controller-->
         <scene sceneID="8oa-lw-Lls">
             <objects>
-                <viewController storyboardIdentifier="PokemonDetailsViewController" id="Kcp-Zl-dTD" customClass="PokemonDetailsViewController" customModule="Pokedex" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PokeDetailsViewController" id="Kcp-Zl-dTD" customClass="PokeDetailsViewController" customModule="Pokedex" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aJ5-Jm-CJf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

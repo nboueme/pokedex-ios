@@ -6,7 +6,7 @@
 //  Copyright © 2019 Nicolas BOUÈME. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct PokemonDetails: Codable {
     var id: Int?
