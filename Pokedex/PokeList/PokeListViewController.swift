@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 protocol PokeListDisplayLogic: class {
     func successFetchedPokedex(viewModel: PokeListModel.FetchPokedex.ViewModel)
@@ -57,6 +58,7 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
         let URL = "https://pokeapi.co/api/v2/pokemon/"
         interactor?.fetchPokedex(request: PokeListModel.FetchPokedex.Request(baseURL: URL))
         tableView.prefetchDataSource = self
+        tableView.register(UINib(nibName: "PokeExpandedTableViewCell", bundle: nil), forCellReuseIdentifier: "ExpandedCell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,6 +78,11 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
     private var currentPokedex: [Pokemon] = []
     private var catchedPokemons: [String] = []
     private var nextPokemonURL: String?
+    private var currentCellExpandedIndex: IndexPath?
+    private var currentCellCollapsedIndex: IndexPath?
+    private var canGoToPokeDetails = false
+    private var currentPokemon: PokemonDetails?
+    private var currentPokemonSprite: UIImage?
     
     func successFetchedPokedex(viewModel: PokeListModel.FetchPokedex.ViewModel) {
         if pokedex.count > 0 {
@@ -101,9 +108,23 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
     }
     
     func successFetchedPokemon(viewModel: PokeListModel.FetchPokemon.ViewModel) {
-        if viewModel.pokemon != nil {
-            loading.isHidden = true
-            router?.routeToPokeDetails(segue: nil)
+        if currentPokemon?.name != viewModel.pokemon?.name {
+            currentPokemon = viewModel.pokemon
+            if canGoToPokeDetails {
+                if let _ = viewModel.pokemon {
+                    loading.isHidden = true
+                    router?.routeToPokeDetails(segue: nil)
+                }
+            } else {
+                // TODO: Sprite request
+                Alamofire.request((viewModel.pokemon?.sprites?.front_default)!).responseData { response in
+                    if response.result.isSuccess {
+                        print("everything is ok")
+                        self.currentPokemonSprite = UIImage(data: response.data!, scale: 1)
+                        self.tableView.reloadRows(at: [self.currentCellExpandedIndex!], with: UITableView.RowAnimation.automatic)
+                    }
+                }
+            }
         }
     }
     
@@ -129,23 +150,42 @@ extension PokeListViewController: UITableViewDataSource, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath)
-        
-        let pokemon = currentPokedex[indexPath.row]
-        
-        if let pokemonName = pokemon.name {
-            cell.textLabel?.text = pokemonName
-//            cell.textLabel?.text = "#\(indexPath.row + 1) \(pokemonName)"
-            cell.backgroundColor = catchedPokemons.index(of: pokemonName) != nil ? #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1) : .white
+        if currentCellExpandedIndex == indexPath {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ExpandedCell", for: indexPath) as! PokeExpandedTableViewCell
+            let pokemon = currentPokedex[indexPath.row]
+            if let pokemonName = pokemon.name, let URL = pokemon.url {
+                canGoToPokeDetails = false
+                let isCatched = catchedPokemons.index(of: pokemonName) != nil ? true : false
+                cell.setup(data: pokemon, isCatched: isCatched)
+                interactor?.fetchPokemon(request: PokeListModel.FetchPokemon.Request(URL: URL, isCatched: isCatched))
+            } else {
+                cell.setup(data: pokemon, isCatched: false)
+            }
+            cell.index = indexPath
+            cell.collapseDelegate = self
+            if let sprite = currentPokemonSprite {
+                cell.pokemonSprite.image = sprite
+            }
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CollapsedCell", for: indexPath) as! PokeCollapsedTableViewCell
+            let pokemon = currentPokedex[indexPath.row]
+            if let pokemonName = pokemon.name {
+                cell.setup(data: pokemon, isCatched: catchedPokemons.index(of: pokemonName) != nil ? true : false)
+            } else {
+                cell.setup(data: pokemon, isCatched: false)
+            }
+            cell.index = indexPath
+            cell.expandDelegate = self
+            return cell
         }
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         loading.isHidden = false
-        
+
         if let pokemonName = currentPokedex[indexPath.row].name, let URL = currentPokedex[indexPath.row].url {
+            canGoToPokeDetails = true
             let isCatched = catchedPokemons.index(of: pokemonName) != nil ? true : false
             interactor?.fetchPokemon(request: PokeListModel.FetchPokemon.Request(URL: URL, isCatched: isCatched))
         }
@@ -163,11 +203,15 @@ extension PokeListViewController: UITableViewDataSource, UITableViewDelegate, UI
 
 extension PokeListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        currentCellCollapsedIndex = nil
+        currentCellExpandedIndex = nil
         currentPokedex = searchText.count > 0 ? pokedex.filter({$0.name!.lowercased().contains(searchText.lowercased())}) : pokedex
         tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        currentCellCollapsedIndex = nil
+        currentCellExpandedIndex = nil
         searchBar.text = String()
         currentPokedex = pokedex
         tableView.reloadData()
@@ -177,5 +221,29 @@ extension PokeListViewController: UISearchBarDelegate {
 private extension PokeListViewController {
     func isLoadingCell(for indexPath: IndexPath) -> Bool {
         return indexPath.row + 1 >= pokedex.count
+    }
+}
+
+extension PokeListViewController : ExpandDelegate, CollapseDelegate {
+    func didExpand(index: IndexPath?) {
+        var toBeReloaded: [IndexPath] = []
+        if let previouslyExpanded = currentCellExpandedIndex {
+            toBeReloaded.append(previouslyExpanded)
+        }
+        currentCellExpandedIndex = index
+        currentCellCollapsedIndex = nil
+        if let indexPath = index {
+            toBeReloaded.append(indexPath)
+        }
+        guard !toBeReloaded.isEmpty else { return }
+        tableView.reloadRows(at: toBeReloaded, with: UITableView.RowAnimation.automatic)
+    }
+    
+    func didCollapse(index: IndexPath?) {
+        currentCellCollapsedIndex = index
+        currentCellExpandedIndex = nil
+        if let indexPath = index {
+            tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+        }
     }
 }
