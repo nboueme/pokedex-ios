@@ -59,6 +59,12 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
         interactor?.fetchPokedex(request: PokeListModel.FetchPokedex.Request(baseURL: URL))
         tableView.prefetchDataSource = self
         tableView.register(UINib(nibName: "PokeExpandedTableViewCell", bundle: nil), forCellReuseIdentifier: "ExpandedCell")
+        
+        for catchedPokemon in CatchedPokemon.all {
+            if let pokemonName = catchedPokemon.name {
+                catchedPokemons.append(pokemonName)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,7 +82,8 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
         }
     }
     var currentPokedex: [Pokemon] = []
-    private(set) var catchedPokemons = CatchedPokemons.array
+//    private(set) var catchedPokemons = CatchedPokemons.array
+    private(set) var catchedPokemons: [String] = []
     private(set) var nextPokemonURL: String?
     var currentCellExpandedIndex: IndexPath?
     var currentCellCollapsedIndex: IndexPath?
@@ -134,8 +141,15 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
     func displayCatchedPokemon(viewModel: PokeListModel.GetCatchedPokemon.ViewModel) {
         if !catchedPokemons.contains(viewModel.catchedPokemon) {
             catchedPokemons.append(viewModel.catchedPokemon)
-            CatchedPokemons.array = catchedPokemons
+//            CatchedPokemons.array = catchedPokemons
+            saveCatchedPokemon(named: viewModel.catchedPokemon)
             tableView.reloadData()
         }
+    }
+    
+    func saveCatchedPokemon(named name: String) {
+        let catchedPokemon = CatchedPokemon(context: AppDelegate.viewContext)
+        catchedPokemon.name = name
+        try? AppDelegate.viewContext.save()
     }
 }

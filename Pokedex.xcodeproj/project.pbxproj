@@ -30,6 +30,8 @@
 		E54AFA182227EA9200104D9D /* PokeListViewControllerUITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AFA172227EA9200104D9D /* PokeListViewControllerUITableView.swift */; };
 		E54AFA1A2227EC9500104D9D /* PokeListViewControllerUISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AFA192227EC9500104D9D /* PokeListViewControllerUISearchBar.swift */; };
 		E54AFA1C2227F62800104D9D /* CatchedPokemons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AFA1B2227F62800104D9D /* CatchedPokemons.swift */; };
+		E54AFA1F2228182C00104D9D /* Pokedex.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E54AFA1D2228182C00104D9D /* Pokedex.xcdatamodeld */; };
+		E54AFA21222828B800104D9D /* CatchedPokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AFA20222828B800104D9D /* CatchedPokemon.swift */; };
 		E55095462201F142001C2C9F /* PokeCollapsedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55095452201F142001C2C9F /* PokeCollapsedTableViewCell.swift */; };
 		E55095492201F356001C2C9F /* PokeExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55095472201F356001C2C9F /* PokeExpandedTableViewCell.swift */; };
 		E550954A2201F356001C2C9F /* PokeExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55095482201F356001C2C9F /* PokeExpandedTableViewCell.xib */; };
@@ -65,6 +67,8 @@
 		E54AFA172227EA9200104D9D /* PokeListViewControllerUITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeListViewControllerUITableView.swift; sourceTree = "<group>"; };
 		E54AFA192227EC9500104D9D /* PokeListViewControllerUISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeListViewControllerUISearchBar.swift; sourceTree = "<group>"; };
 		E54AFA1B2227F62800104D9D /* CatchedPokemons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatchedPokemons.swift; sourceTree = "<group>"; };
+		E54AFA1E2228182C00104D9D /* Pokedex.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pokedex.xcdatamodel; sourceTree = "<group>"; };
+		E54AFA20222828B800104D9D /* CatchedPokemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatchedPokemon.swift; sourceTree = "<group>"; };
 		E55095452201F142001C2C9F /* PokeCollapsedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeCollapsedTableViewCell.swift; sourceTree = "<group>"; };
 		E55095472201F356001C2C9F /* PokeExpandedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeExpandedTableViewCell.swift; sourceTree = "<group>"; };
 		E55095482201F356001C2C9F /* PokeExpandedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PokeExpandedTableViewCell.xib; sourceTree = "<group>"; };
@@ -174,11 +178,13 @@
 		E58D6F3321EC9673008B623E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E54AFA1D2228182C00104D9D /* Pokedex.xcdatamodeld */,
 				E58D6F3D21ECD9BE008B623E /* Pokedex.swift */,
 				E58D6F3921ECC112008B623E /* Pokemon.swift */,
 				E52C301121EE201F000C6E7C /* PokemonDetails.swift */,
 				E509254D21EF7DB80099E622 /* Sprites.swift */,
 				E54AFA1B2227F62800104D9D /* CatchedPokemons.swift */,
+				E54AFA20222828B800104D9D /* CatchedPokemon.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -331,9 +337,11 @@
 				E54AFA1A2227EC9500104D9D /* PokeListViewControllerUISearchBar.swift in Sources */,
 				E538CE5B21F75288003C81BA /* PokeDetailsInteractor.swift in Sources */,
 				E538CE5721F75288003C81BA /* PokeDetailsWorker.swift in Sources */,
+				E54AFA1F2228182C00104D9D /* Pokedex.xcdatamodeld in Sources */,
 				E538CE4E21F7518A003C81BA /* PokeListInteractor.swift in Sources */,
 				E58D6F3A21ECC112008B623E /* Pokemon.swift in Sources */,
 				E538CE5921F75288003C81BA /* PokeDetailsModels.swift in Sources */,
+				E54AFA21222828B800104D9D /* CatchedPokemon.swift in Sources */,
 				E54AFA182227EA9200104D9D /* PokeListViewControllerUITableView.swift in Sources */,
 				E538CE4A21F7518A003C81BA /* PokeListWorker.swift in Sources */,
 				E509254E21EF7DB80099E622 /* Sprites.swift in Sources */,
@@ -552,6 +560,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E54AFA1D2228182C00104D9D /* Pokedex.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E54AFA1E2228182C00104D9D /* Pokedex.xcdatamodel */,
+			);
+			currentVersion = E54AFA1E2228182C00104D9D /* Pokedex.xcdatamodel */;
+			path = Pokedex.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E526D3EE21E7A20D00EC89E6 /* Project object */;
 }
