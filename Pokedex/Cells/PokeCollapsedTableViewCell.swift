@@ -8,17 +8,13 @@
 
 import UIKit
 
-protocol ExpandDelegate: class {
-    func didExpand(index: IndexPath?)
-}
-
 class PokeCollapsedTableViewCell: UITableViewCell {
     // MARK: Outlets
     @IBOutlet weak var pokemonNameLabel: UILabel!
     
     // MARK: Variables
     var index: IndexPath?
-    weak var expandDelegate: ExpandDelegate?
+    var shouldExpand: ((IndexPath?) -> Void)?
     
     // MARK: UI
     func setup(data: Pokemon, isCatched: Bool) {
@@ -30,6 +26,6 @@ class PokeCollapsedTableViewCell: UITableViewCell {
     
     // MARK: Actions
     @IBAction func didTapExpand(_ sender: UIButton) {
-        expandDelegate?.didExpand(index: index)
+        shouldExpand?(index)
     }
 }

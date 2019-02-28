@@ -27,6 +27,9 @@
 		E538CE5B21F75288003C81BA /* PokeDetailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538CE5521F75288003C81BA /* PokeDetailsInteractor.swift */; };
 		E538E14421EF62A300463E82 /* PokeDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E538E14621EF62A300463E82 /* PokeDetails.storyboard */; };
 		E5426DD121FF0F9B00C7170F /* PokeDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5426DD021FF0F9B00C7170F /* PokeDetailsRouter.swift */; };
+		E54AFA182227EA9200104D9D /* PokeListViewControllerUITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AFA172227EA9200104D9D /* PokeListViewControllerUITableView.swift */; };
+		E54AFA1A2227EC9500104D9D /* PokeListViewControllerUISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AFA192227EC9500104D9D /* PokeListViewControllerUISearchBar.swift */; };
+		E54AFA1C2227F62800104D9D /* CatchedPokemons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AFA1B2227F62800104D9D /* CatchedPokemons.swift */; };
 		E55095462201F142001C2C9F /* PokeCollapsedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55095452201F142001C2C9F /* PokeCollapsedTableViewCell.swift */; };
 		E55095492201F356001C2C9F /* PokeExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55095472201F356001C2C9F /* PokeExpandedTableViewCell.swift */; };
 		E550954A2201F356001C2C9F /* PokeExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55095482201F356001C2C9F /* PokeExpandedTableViewCell.xib */; };
@@ -59,6 +62,9 @@
 		E538CE5521F75288003C81BA /* PokeDetailsInteractor.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = PokeDetailsInteractor.swift; sourceTree = "<group>"; };
 		E538E14521EF62A300463E82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PokeDetails.storyboard; sourceTree = "<group>"; };
 		E5426DD021FF0F9B00C7170F /* PokeDetailsRouter.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = PokeDetailsRouter.swift; sourceTree = "<group>"; };
+		E54AFA172227EA9200104D9D /* PokeListViewControllerUITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeListViewControllerUITableView.swift; sourceTree = "<group>"; };
+		E54AFA192227EC9500104D9D /* PokeListViewControllerUISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeListViewControllerUISearchBar.swift; sourceTree = "<group>"; };
+		E54AFA1B2227F62800104D9D /* CatchedPokemons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatchedPokemons.swift; sourceTree = "<group>"; };
 		E55095452201F142001C2C9F /* PokeCollapsedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeCollapsedTableViewCell.swift; sourceTree = "<group>"; };
 		E55095472201F356001C2C9F /* PokeExpandedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeExpandedTableViewCell.swift; sourceTree = "<group>"; };
 		E55095482201F356001C2C9F /* PokeExpandedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PokeExpandedTableViewCell.xib; sourceTree = "<group>"; };
@@ -136,6 +142,8 @@
 				E538CE4621F7518A003C81BA /* PokeListModels.swift */,
 				E538CE4721F7518A003C81BA /* PokeListViewController.swift */,
 				E538CE4821F7518A003C81BA /* PokeListInteractor.swift */,
+				E54AFA172227EA9200104D9D /* PokeListViewControllerUITableView.swift */,
+				E54AFA192227EC9500104D9D /* PokeListViewControllerUISearchBar.swift */,
 			);
 			path = PokeList;
 			sourceTree = "<group>";
@@ -170,6 +178,7 @@
 				E58D6F3921ECC112008B623E /* Pokemon.swift */,
 				E52C301121EE201F000C6E7C /* PokemonDetails.swift */,
 				E509254D21EF7DB80099E622 /* Sprites.swift */,
+				E54AFA1B2227F62800104D9D /* CatchedPokemons.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -291,10 +300,16 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Pokedex/Pods-Pokedex-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -312,11 +327,14 @@
 				E55095492201F356001C2C9F /* PokeExpandedTableViewCell.swift in Sources */,
 				E538CE4B21F7518A003C81BA /* PokeListRouter.swift in Sources */,
 				E538CE5A21F75288003C81BA /* PokeDetailsViewController.swift in Sources */,
+				E54AFA1C2227F62800104D9D /* CatchedPokemons.swift in Sources */,
+				E54AFA1A2227EC9500104D9D /* PokeListViewControllerUISearchBar.swift in Sources */,
 				E538CE5B21F75288003C81BA /* PokeDetailsInteractor.swift in Sources */,
 				E538CE5721F75288003C81BA /* PokeDetailsWorker.swift in Sources */,
 				E538CE4E21F7518A003C81BA /* PokeListInteractor.swift in Sources */,
 				E58D6F3A21ECC112008B623E /* Pokemon.swift in Sources */,
 				E538CE5921F75288003C81BA /* PokeDetailsModels.swift in Sources */,
+				E54AFA182227EA9200104D9D /* PokeListViewControllerUITableView.swift in Sources */,
 				E538CE4A21F7518A003C81BA /* PokeListWorker.swift in Sources */,
 				E509254E21EF7DB80099E622 /* Sprites.swift in Sources */,
 				E52C301221EE201F000C6E7C /* PokemonDetails.swift in Sources */,
@@ -480,6 +498,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Pokedex/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -498,6 +517,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Pokedex/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

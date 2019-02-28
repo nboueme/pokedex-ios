@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol CollapseDelegate: class {
-    func didCollapse(index: IndexPath?)
-}
-
 class PokeExpandedTableViewCell: UITableViewCell {
     // MARK: Outlets
     @IBOutlet weak var pokemonNameLabel: UILabel!
@@ -19,7 +15,7 @@ class PokeExpandedTableViewCell: UITableViewCell {
     
     // MARK: Variables
     var index: IndexPath?
-    weak var collapseDelegate: CollapseDelegate?
+    var shouldCollapse: ((IndexPath?) -> Void)?
     
     // MARK: UI
     func setup(data: Pokemon, isCatched: Bool) {
@@ -31,6 +27,6 @@ class PokeExpandedTableViewCell: UITableViewCell {
     
     // MARK: Actions
     @IBAction func didTapCollapse(_ sender: UIButton) {
-        collapseDelegate?.didCollapse(index: index)
+        shouldCollapse?(index)
     }
 }
