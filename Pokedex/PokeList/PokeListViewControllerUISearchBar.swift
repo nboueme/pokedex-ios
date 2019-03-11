@@ -9,18 +9,23 @@
 import UIKit
 
 extension PokeListViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        currentCellCollapsedIndex = nil
-        currentCellExpandedIndex = nil
-        currentPokedex = searchText.count > 0 ? pokedex.filter({$0.name!.lowercased().contains(searchText.lowercased())}) : pokedex
-        tableView.reloadData()
+    func searchPokemons() {
+        searchBar
+            .rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext: { [unowned self] query in
+                self.currentCellCollapsedIndex = nil
+                self.currentCellExpandedIndex = nil
+                self.currentPokedex.accept(query.count > 0 ? self.pokedex.filter({$0.name!.lowercased().contains(query.lowercased())}) : self.pokedex)
+            })
+            .disposed(by: disposeBag)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         currentCellCollapsedIndex = nil
         currentCellExpandedIndex = nil
         searchBar.text = String()
-        currentPokedex = pokedex
-        tableView.reloadData()
+        currentPokedex.accept(pokedex)
     }
 }

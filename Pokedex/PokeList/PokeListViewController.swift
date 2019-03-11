@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import Alamofire
 
 protocol PokeListDisplayLogic: class {
@@ -57,8 +59,16 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
         super.viewDidLoad()
         let URL = "https://pokeapi.co/api/v2/pokemon/"
         interactor?.fetchPokedex(request: PokeListModel.FetchPokedex.Request(baseURL: URL))
+        
+        tableView.dataSource = nil
+        tableView.delegate = self
         tableView.prefetchDataSource = self
+        
+        tableView.register(UINib(nibName: "PokeCollapsedTableViewCell", bundle: nil), forCellReuseIdentifier: "CollapsedCell")
         tableView.register(UINib(nibName: "PokeExpandedTableViewCell", bundle: nil), forCellReuseIdentifier: "ExpandedCell")
+        
+        bindPokedexToTableView()
+        searchPokemons()
         
         for catchedPokemon in CatchedPokemon.all {
             if let pokemonName = catchedPokemon.name {
@@ -78,13 +88,16 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
     
     private(set) var pokedex: [Pokemon] = [] {
         didSet {
-            currentPokedex = pokedex
+            currentPokedex.accept(pokedex)
         }
     }
-    var currentPokedex: [Pokemon] = []
+    
+    private(set) var disposeBag = DisposeBag()
+    let currentPokedex: BehaviorRelay<[Pokemon]> = BehaviorRelay(value: [])
 //    private(set) var catchedPokemons = CatchedPokemons.array
     private(set) var catchedPokemons: [String] = []
     private(set) var nextPokemonURL: String?
+    let searchText: BehaviorRelay<String> = BehaviorRelay(value: "")
     var currentCellExpandedIndex: IndexPath?
     var currentCellCollapsedIndex: IndexPath?
     var canGoToPokeDetails = false
@@ -94,9 +107,10 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
     func successFetchedPokedex(viewModel: PokeListModel.FetchPokedex.ViewModel) {
         if pokedex.count > 0 {
             if let pokedex = viewModel.pokedex {
-                for pokemon in pokedex {
-                    self.pokedex.append(pokemon)
-                }
+                self.pokedex = self.pokedex + pokedex
+//                for pokemon in pokedex {
+//                    self.pokedex.append(pokemon)
+//                }
             }
         } else {
             if let pokedex = viewModel.pokedex {
@@ -106,7 +120,6 @@ class PokeListViewController: UIViewController, PokeListDisplayLogic {
         
         self.nextPokemonURL = viewModel.next
         
-        tableView.reloadData()
         loading.isHidden = true
     }
     

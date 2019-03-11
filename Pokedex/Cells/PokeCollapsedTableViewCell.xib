@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CollapsedCell" rowHeight="114" id="dXq-gt-mbF" customClass="PokeCollapsedTableViewCell" customModule="Pokedex" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="381" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dXq-gt-mbF" id="a37-pf-WH5">
+                <rect key="frame" x="0.0" y="0.0" width="381" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STf-yw-jzZ">
+                        <rect key="frame" x="15" y="11.5" width="42" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="QRL-J3-XnX"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Y0-Qh-Ih6">
+                        <rect key="frame" x="331" y="-0.5" width="30" height="44.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="jF4-1N-Ec8"/>
+                            <constraint firstAttribute="height" constant="44" id="zhz-Fk-IPH"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                        <state key="normal" title="+"/>
+                        <connections>
+                            <action selector="didTapExpand:" destination="dXq-gt-mbF" eventType="touchUpInside" id="SeG-VF-QMP"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="STf-yw-jzZ" firstAttribute="centerY" secondItem="a37-pf-WH5" secondAttribute="centerY" id="X1p-7c-ZwU"/>
+                    <constraint firstItem="6Y0-Qh-Ih6" firstAttribute="centerY" secondItem="a37-pf-WH5" secondAttribute="centerY" id="hhN-bl-9Vk"/>
+                    <constraint firstItem="6Y0-Qh-Ih6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="STf-yw-jzZ" secondAttribute="trailing" constant="10" id="j3W-2w-G4A"/>
+                    <constraint firstItem="STf-yw-jzZ" firstAttribute="leading" secondItem="a37-pf-WH5" secondAttribute="leading" constant="15" id="qbU-eo-tb7"/>
+                    <constraint firstAttribute="trailing" secondItem="6Y0-Qh-Ih6" secondAttribute="trailing" constant="20" id="zQe-DN-Qpi"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="pokemonNameLabel" destination="STf-yw-jzZ" id="1Os-Gn-6el"/>
+            </connections>
+            <point key="canvasLocation" x="120.8" y="140.32983508245877"/>
+        </tableViewCell>
+    </objects>
+</document>

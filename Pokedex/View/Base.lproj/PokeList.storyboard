@@ -14,8 +14,8 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="PokeListViewController" customModule="Pokedex" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" misplaced="YES" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="410"/>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" barStyle="black" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Elq-SY-qQW">
@@ -34,49 +34,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2xq-io-NJ9">
                                 <rect key="frame" x="0.0" y="56" width="320" height="360"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CollapsedCell" id="M3m-O9-hhc" customClass="PokeCollapsedTableViewCell" customModule="Pokedex" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="M3m-O9-hhc" id="aQs-yx-0vP">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjR-R0-Pvt">
-                                                    <rect key="frame" x="15" y="11.5" width="42" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="tCF-jR-gAN"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i7L-Pk-bu3">
-                                                    <rect key="frame" x="270" y="-0.5" width="30" height="44.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="44" id="4Sf-xE-XLb"/>
-                                                        <constraint firstAttribute="width" constant="30" id="vsl-1c-T5f"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                                    <state key="normal" title="+"/>
-                                                    <connections>
-                                                        <action selector="didTapExpand:" destination="M3m-O9-hhc" eventType="touchUpInside" id="M7e-CX-qjO"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="i7L-Pk-bu3" firstAttribute="centerY" secondItem="aQs-yx-0vP" secondAttribute="centerY" id="Nuw-Yz-vVB"/>
-                                                <constraint firstItem="i7L-Pk-bu3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yjR-R0-Pvt" secondAttribute="trailing" constant="10" id="Qh0-xl-X04"/>
-                                                <constraint firstItem="yjR-R0-Pvt" firstAttribute="leading" secondItem="aQs-yx-0vP" secondAttribute="leadingMargin" id="Spu-C4-6W3"/>
-                                                <constraint firstAttribute="trailing" secondItem="i7L-Pk-bu3" secondAttribute="trailing" constant="20" id="npa-QZ-QqT"/>
-                                                <constraint firstItem="yjR-R0-Pvt" firstAttribute="centerY" secondItem="aQs-yx-0vP" secondAttribute="centerY" id="rC8-P6-hxb"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="pokemonNameLabel" destination="yjR-R0-Pvt" id="GD9-3m-Q0x"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="jxA-NQ-gHn"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="rdf-2L-eVK"/>
